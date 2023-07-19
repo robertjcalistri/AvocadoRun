@@ -1,4 +1,3 @@
-
 import SpriteKit
 import GameplayKit
 
@@ -16,7 +15,6 @@ class GameScene: SKScene {
     var isGameOver = false
     var scoreLabel: SKLabelNode!
     var score: Int = 0
-    var scoreTimer: Timer?
     
     override func didMove(to view: SKView) {
         backgroundColor = SKColor.white
@@ -48,7 +46,7 @@ class GameScene: SKScene {
         scoreLabel.text = "Score: 0"
         scoreLabel.fontSize = 24
         scoreLabel.fontColor = SKColor.black
-        scoreLabel.position = CGPoint(x: size.width - 50, y: size.height - 30)
+        scoreLabel.position = CGPoint(x: size.width / 2, y: size.height - 50)
         scoreLabel.zPosition = 2
         addChild(scoreLabel)
         
@@ -58,10 +56,15 @@ class GameScene: SKScene {
     }
     
     func startScoring() {
-        scoreTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+        let wait = SKAction.wait(forDuration: 1.0)
+        let block = SKAction.run({
             self.score += 1
             self.scoreLabel.text = "Score: \(self.score)"
-        }
+            print("Score: \(self.score)")
+        })
+        let sequence = SKAction.sequence([wait,block])
+        let repeatForever = SKAction.repeatForever(sequence)
+        run(repeatForever)
     }
     override func update(_ currentTime: TimeInterval) {
         if player.position.y < -size.height / 2 {
@@ -75,10 +78,11 @@ class GameScene: SKScene {
 
     
     func gameOver() {
+        print("Game Over function called")
         isGameOver = true
         player.physicsBody?.isDynamic = false
         addChild(gameOverLabel)
-        scoreTimer?.invalidate()
+        removeAllActions()
     }
 
     
@@ -104,9 +108,9 @@ class GameScene: SKScene {
         
         // Reset score
         score = 0
-        scoreLabel.text = "Score :\(score)"
+        scoreLabel.text = "Score: \(score)"
     }
-	
+    
     func generateGround() {
         // Generate ground tiles and add them
         while lastGroundTileX < size.width {
@@ -129,7 +133,7 @@ class GameScene: SKScene {
             groundTile.position = CGPoint(x: groundTile.position.x - 2, y: groundTile.position.y)
 
             // Check if the left edge of the ground tile is completely off the left edge of the screen
-            if groundTile.position.x - groundTileWidth / 6 < -size.width / 2{
+            if groundTile.position.x - groundTileWidth / 2 < -size.width / 2 {
                 groundTile.removeFromParent()
                 groundTiles.remove(at: index)
 

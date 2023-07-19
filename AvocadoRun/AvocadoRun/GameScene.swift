@@ -7,7 +7,9 @@ class GameScene: SKScene {
     // Set up the ground variables
     var groundTiles = [SKSpriteNode]()
     var lastGroundTileX: CGFloat = 0.0
+    var lastGroundTileY: CGFloat = 0.0
     let groundTileWidth: CGFloat = 100.0 // Adjust this based on your desired ground tile width
+    let maxPlatformHeight: CGFloat = 100.0 // Maximum height difference between platforms
 
     override func didMove(to view: SKView) {
         backgroundColor = SKColor.white
@@ -30,20 +32,22 @@ class GameScene: SKScene {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         // The player jumps when the screen is touched
-        player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 50))
+        player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 100))
     }
 
     func generateGround() {
         // Generate ground tiles and add them
         while lastGroundTileX < size.width {
             let groundTile = SKSpriteNode(color: SKColor.black, size: CGSize(width: groundTileWidth, height: 20))
-            groundTile.position = CGPoint(x: lastGroundTileX, y: groundTile.size.height / 2)
+            let randomHeight = CGFloat.random(in: -maxPlatformHeight...maxPlatformHeight)
+            groundTile.position = CGPoint(x: lastGroundTileX, y: lastGroundTileY + randomHeight)
             groundTile.physicsBody = SKPhysicsBody(rectangleOf: groundTile.size)
             groundTile.physicsBody?.isDynamic = false
             addChild(groundTile)
             groundTiles.append(groundTile)
 
             lastGroundTileX += groundTileWidth
+            lastGroundTileY = groundTile.position.y
         }
     }
 
@@ -59,13 +63,15 @@ class GameScene: SKScene {
 
                 // Add a new ground tile to the right
                 let newGroundTile = SKSpriteNode(color: SKColor.black, size: CGSize(width: groundTileWidth, height: 20))
-                newGroundTile.position = CGPoint(x: lastGroundTileX, y: newGroundTile.size.height / 2)
+                let randomHeight = CGFloat.random(in: -maxPlatformHeight...maxPlatformHeight)
+                newGroundTile.position = CGPoint(x: lastGroundTileX, y: lastGroundTileY + randomHeight)
                 newGroundTile.physicsBody = SKPhysicsBody(rectangleOf: newGroundTile.size)
                 newGroundTile.physicsBody?.isDynamic = false
                 addChild(newGroundTile)
                 groundTiles.append(newGroundTile)
 
                 lastGroundTileX += groundTileWidth
+                lastGroundTileY = newGroundTile.position.y
             }
         }
     }

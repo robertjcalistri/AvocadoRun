@@ -49,12 +49,22 @@ class GameScene: SKScene {
 
     func moveGround() {
         // Move the ground tiles to the left
-        for groundTile in groundTiles {
+        for (index, groundTile) in groundTiles.enumerated() {
             groundTile.position = CGPoint(x: groundTile.position.x - 2, y: groundTile.position.y)
 
-            // If the ground tile moves off the left edge, move it to the right
-            if groundTile.position.x + groundTileWidth < 0 {
-                groundTile.position = CGPoint(x: lastGroundTileX, y: groundTile.position.y)
+            // Check if the left edge of the ground tile is completely off the left edge of the screen
+            if groundTile.position.x - groundTileWidth / 6 < -size.width / 2{
+                groundTile.removeFromParent()
+                groundTiles.remove(at: index)
+
+                // Add a new ground tile to the right
+                let newGroundTile = SKSpriteNode(color: SKColor.black, size: CGSize(width: groundTileWidth, height: 20))
+                newGroundTile.position = CGPoint(x: lastGroundTileX, y: newGroundTile.size.height / 2)
+                newGroundTile.physicsBody = SKPhysicsBody(rectangleOf: newGroundTile.size)
+                newGroundTile.physicsBody?.isDynamic = false
+                addChild(newGroundTile)
+                groundTiles.append(newGroundTile)
+
                 lastGroundTileX += groundTileWidth
             }
         }

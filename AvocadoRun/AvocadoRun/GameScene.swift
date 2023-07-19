@@ -10,6 +10,9 @@ class GameScene: SKScene {
     var lastGroundTileY: CGFloat = 0.0
     let groundTileWidth: CGFloat = 100.0 // Adjust this based on your desired ground tile width
     let maxPlatformHeight: CGFloat = 100.0 // Maximum height difference between platforms
+    
+    var gameOverLabel: SKLabelNode!
+    var isGameOver = false
 
     override func didMove(to view: SKView) {
         backgroundColor = SKColor.white
@@ -23,16 +26,52 @@ class GameScene: SKScene {
 
         // Generate initial ground tiles
         generateGround()
+        
+        // Generating game over
+        gameOverLabel = SKLabelNode(fontNamed: "Arial")
+        gameOverLabel.text = "Game Over! Tap to restart"
+        gameOverLabel.fontSize = 65
+        gameOverLabel.fontColor = SKColor.red
+        gameOverLabel.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        gameOverLabel.zPosition = 2
     }
 
     override func update(_ currentTime: TimeInterval) {
-        // Move the ground
-        moveGround()
+        if player.position.y < -size.height / 2 {
+            if !isGameOver {
+                gameOver()
+            }
+        } else {
+            moveGround()
+        }
     }
 
+    
+    func gameOver() {
+        isGameOver = true
+        player.physicsBody?.isDynamic = false
+        addChild(gameOverLabel)
+    }
+
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        // The player jumps when the screen is touched
-        player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 100))
+        if isGameOver {
+            restartGame()
+        } else {
+            player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 100))
+        }
+    }
+
+    func restartGame() {
+        gameOverLabel.removeFromParent()
+        isGameOver = false
+        player.physicsBody?.isDynamic = true
+        player.position = CGPoint(x: size.width * 0.1, y: size.height * 0.1)
+        lastGroundTileX = 0.0
+        lastGroundTileY = 0.0
+        groundTiles.forEach { $0.removeFromParent() }
+        groundTiles.removeAll()
+        generateGround()
     }
 
     func generateGround() {

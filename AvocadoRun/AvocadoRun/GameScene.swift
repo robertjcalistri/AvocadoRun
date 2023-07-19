@@ -1,3 +1,4 @@
+
 import SpriteKit
 import GameplayKit
 
@@ -13,12 +14,19 @@ class GameScene: SKScene {
     
     var gameOverLabel: SKLabelNode!
     var isGameOver = false
-
+    var scoreLabel: SKLabelNode!
+    var score: Int = 0
+    var scoreTimer: Timer?
+    
     override func didMove(to view: SKView) {
         backgroundColor = SKColor.white
         player.physicsBody = SKPhysicsBody(rectangleOf: player.size)
         player.zPosition = 1
-
+        
+        // Player physics
+        player.physicsBody = SKPhysicsBody(rectangleOf: player.size)
+        player.physicsBody?.allowsRotation = false
+        
         // Set the player's position
         player.position = CGPoint(x: size.width * 0.1, y: size.height * 0.1)
 
@@ -30,12 +38,31 @@ class GameScene: SKScene {
         // Generating game over
         gameOverLabel = SKLabelNode(fontNamed: "Arial")
         gameOverLabel.text = "Game Over! Tap to restart"
-        gameOverLabel.fontSize = 300
+        gameOverLabel.fontSize = 50
         gameOverLabel.fontColor = SKColor.red
         gameOverLabel.position = CGPoint(x: size.width / 2, y: size.height / 2)
         gameOverLabel.zPosition = 2
+        
+        // Score label
+        scoreLabel = SKLabelNode(fontNamed: "Arial")
+        scoreLabel.text = "Score: 0"
+        scoreLabel.fontSize = 24
+        scoreLabel.fontColor = SKColor.black
+        scoreLabel.position = CGPoint(x: size.width - 50, y: size.height - 30)
+        scoreLabel.zPosition = 2
+        addChild(scoreLabel)
+        
+        startScoring()
+        print("Score Label: \(scoreLabel)")
+        print("Game Over Label: \(gameOverLabel)")
     }
-
+    
+    func startScoring() {
+        scoreTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+            self.score += 1
+            self.scoreLabel.text = "Score: \(self.score)"
+        }
+    }
     override func update(_ currentTime: TimeInterval) {
         if player.position.y < -size.height / 2 {
             if !isGameOver {
@@ -51,6 +78,7 @@ class GameScene: SKScene {
         isGameOver = true
         player.physicsBody?.isDynamic = false
         addChild(gameOverLabel)
+        scoreTimer?.invalidate()
     }
 
     
@@ -58,13 +86,9 @@ class GameScene: SKScene {
         if isGameOver {
             restartGame()
         } else {
-            if player.physicsBody?.isResting == true || player.physicsBody?.velocity.dy ?? 0 > 0{
-                        player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 100))
-                    }
-            //player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 100))
+            player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 100))
         }
     }
-    
 
     func restartGame() {
         gameOverLabel.removeFromParent()
@@ -76,8 +100,13 @@ class GameScene: SKScene {
         groundTiles.forEach { $0.removeFromParent() }
         groundTiles.removeAll()
         generateGround()
+        startScoring()
+        
+        // Reset score
+        score = 0
+        scoreLabel.text = "Score :\(score)"
     }
-
+	
     func generateGround() {
         // Generate ground tiles and add them
         while lastGroundTileX < size.width {

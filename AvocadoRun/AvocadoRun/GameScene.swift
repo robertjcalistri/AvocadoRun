@@ -30,7 +30,7 @@ class GameScene: SKScene {
         // Generating game over
         gameOverLabel = SKLabelNode(fontNamed: "Arial")
         gameOverLabel.text = "Game Over! Tap to restart"
-        gameOverLabel.fontSize = 65
+        gameOverLabel.fontSize = 300
         gameOverLabel.fontColor = SKColor.red
         gameOverLabel.position = CGPoint(x: size.width / 2, y: size.height / 2)
         gameOverLabel.zPosition = 2
@@ -58,9 +58,13 @@ class GameScene: SKScene {
         if isGameOver {
             restartGame()
         } else {
-            player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 100))
+            if player.physicsBody?.isResting == true || player.physicsBody?.velocity.dy ?? 0 > 0{
+                        player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 100))
+                    }
+            //player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 100))
         }
     }
+    
 
     func restartGame() {
         gameOverLabel.removeFromParent()

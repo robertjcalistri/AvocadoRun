@@ -4,8 +4,6 @@ import GameplayKit
 class GameScene: SKScene {
     let player = SKSpriteNode(color: .red, size: CGSize(width: 50, height: 50))
 
-    let floor = SKSpriteNode()
-
     // Set up the ground variables
     var groundTiles = [SKSpriteNode]()
     var lastGroundTileX: CGFloat = 0.0
@@ -17,23 +15,15 @@ class GameScene: SKScene {
         player.zPosition = 1
 
         // Set the player's position
-        player.position = CGPoint(x: size.width * 0.01, y: size.height * 0.01)
+        player.position = CGPoint(x: size.width * 0.1, y: size.height * 0.1)
 
         addChild(player)
-
-        floor.size = CGSize(width: size.width, height: 100) // Set size of floor
-        floor.position = CGPoint(x: size.width / 8, y: floor.size.height / 8) // Set position of floor
-        floor.physicsBody = SKPhysicsBody(rectangleOf: floor.size)
-        floor.physicsBody?.isDynamic = false
-        addChild(floor)
 
         // Generate initial ground tiles
         generateGround()
     }
 
-
     override func update(_ currentTime: TimeInterval) {
-
         // Move the ground
         moveGround()
     }
@@ -47,10 +37,10 @@ class GameScene: SKScene {
         // Generate ground tiles and add them
         while lastGroundTileX < size.width {
             let groundTile = SKSpriteNode(color: SKColor.black, size: CGSize(width: groundTileWidth, height: 20))
-            groundTile.position = CGPoint(x: lastGroundTileX, y: floor.size.height / 2 + groundTile.size.height / 2)
+            groundTile.position = CGPoint(x: lastGroundTileX, y: groundTile.size.height / 2)
             groundTile.physicsBody = SKPhysicsBody(rectangleOf: groundTile.size)
             groundTile.physicsBody?.isDynamic = false
-            addChild(groundTile) // Add groundTile to scene directly, not to floor
+            addChild(groundTile)
             groundTiles.append(groundTile)
 
             lastGroundTileX += groundTileWidth

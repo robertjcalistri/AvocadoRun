@@ -16,17 +16,21 @@ class GameScene: SKScene {
         player.physicsBody = SKPhysicsBody(rectangleOf: player.size)
         player.zPosition = 1
 
-        player.position = CGPoint(x: size.width * 0.1, y: floor.position.y + floor.size.height / 2 + player.size.height / 2)
+        // Set the player's position
+        player.position = CGPoint(x: size.width * 0.01, y: size.height * 0.01)
+
         addChild(player)
-        
+
+        floor.size = CGSize(width: size.width, height: 100) // Set size of floor
+        floor.position = CGPoint(x: size.width / 8, y: floor.size.height / 8) // Set position of floor
         floor.physicsBody = SKPhysicsBody(rectangleOf: floor.size)
         floor.physicsBody?.isDynamic = false
         addChild(floor)
 
-        
         // Generate initial ground tiles
         generateGround()
     }
+
 
     override func update(_ currentTime: TimeInterval) {
 
@@ -43,8 +47,10 @@ class GameScene: SKScene {
         // Generate ground tiles and add them
         while lastGroundTileX < size.width {
             let groundTile = SKSpriteNode(color: SKColor.black, size: CGSize(width: groundTileWidth, height: 20))
-            groundTile.position = CGPoint(x: lastGroundTileX, y: floor.position.y - floor.size.height / 2 - groundTile.size.height / 2)
-            addChild(groundTile)
+            groundTile.position = CGPoint(x: lastGroundTileX, y: floor.size.height / 2 + groundTile.size.height / 2)
+            groundTile.physicsBody = SKPhysicsBody(rectangleOf: groundTile.size)
+            groundTile.physicsBody?.isDynamic = false
+            addChild(groundTile) // Add groundTile to scene directly, not to floor
             groundTiles.append(groundTile)
 
             lastGroundTileX += groundTileWidth

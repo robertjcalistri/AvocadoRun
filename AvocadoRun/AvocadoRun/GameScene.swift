@@ -37,16 +37,16 @@ class GameScene: SKScene {
         gameOverLabel = SKLabelNode(fontNamed: "Arial")
         gameOverLabel.text = "Game Over! Tap to restart"
         gameOverLabel.fontSize = 50
-        gameOverLabel.fontColor = SKColor.red
-        gameOverLabel.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        gameOverLabel.fontColor = .red
+        gameOverLabel.position = CGPointZero
         gameOverLabel.zPosition = 2
         
         // Score label
         scoreLabel = SKLabelNode(fontNamed: "Arial")
         scoreLabel.text = "Score: 0"
         scoreLabel.fontSize = 24
-        scoreLabel.fontColor = SKColor.black
-        scoreLabel.position = CGPoint(x: size.width / 2, y: size.height - 50)
+        scoreLabel.fontColor = .black
+        scoreLabel.position = CGPoint(x:0, y:400)
         scoreLabel.zPosition = 2
         addChild(scoreLabel)
         
@@ -67,7 +67,7 @@ class GameScene: SKScene {
         run(repeatForever)
     }
     override func update(_ currentTime: TimeInterval) {
-        if player.position.y < -size.height / 2 {
+        if player.position.y < -size.height / 2 || player.position.y > size.height / 2{
             if !isGameOver {
                 gameOver()
             }

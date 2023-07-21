@@ -21,7 +21,7 @@ class GameScene: SKScene {
     
     override func didMove(to view: SKView) {
         
-        let backgroundImg = SKSpriteNode(imageNamed: "background")
+        let backgroundImg = SKSpriteNode(imageNamed: "Menubackground")
         backgroundImg.position = CGPointZero
         backgroundImg.zPosition = -1
         addChild(backgroundImg)

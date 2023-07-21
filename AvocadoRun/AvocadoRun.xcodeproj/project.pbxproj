@@ -15,6 +15,13 @@
 		7583A5AF2A6721C9009E6554 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7583A5AE2A6721C9009E6554 /* Assets.xcassets */; };
 		7583A5B22A6721C9009E6554 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7583A5B02A6721C9009E6554 /* LaunchScreen.storyboard */; };
 		7583A5B92A672287009E6554 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 7583A5B82A672287009E6554 /* GameScene.sks */; };
+		7583A5C22A6B2CBC009E6554 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 7583A5C12A6B2CBC009E6554 /* FirebaseAuth */; };
+		7583A5C52A6B2FE9009E6554 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7583A5C42A6B2FE9009E6554 /* String.swift */; };
+		7583A5C72A6B31CA009E6554 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7583A5C62A6B31CA009E6554 /* GoogleService-Info.plist */; };
+		7583A5CB2A6B33AF009E6554 /* NewAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7583A5CA2A6B33AF009E6554 /* NewAccountView.swift */; };
+		7583A5CD2A6B33F4009E6554 /* InsideAppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7583A5CC2A6B33F4009E6554 /* InsideAppView.swift */; };
+		7583A5D32A6B3603009E6554 /* LoginView.sks in Resources */ = {isa = PBXBuildFile; fileRef = 7583A5D22A6B3603009E6554 /* LoginView.sks */; };
+		7583A5D72A6B36C5009E6554 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7583A5D62A6B36C5009E6554 /* LoginView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +34,12 @@
 		7583A5AE2A6721C9009E6554 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7583A5B12A6721C9009E6554 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7583A5B82A672287009E6554 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
+		7583A5C42A6B2FE9009E6554 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = String.swift; path = "../../../../../../.Trash/AvocadoRun 4.57.01 PM/AvocadoRun/String.swift"; sourceTree = "<group>"; };
+		7583A5C62A6B31CA009E6554 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		7583A5CA2A6B33AF009E6554 /* NewAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAccountView.swift; sourceTree = "<group>"; };
+		7583A5CC2A6B33F4009E6554 /* InsideAppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsideAppView.swift; sourceTree = "<group>"; };
+		7583A5D22A6B3603009E6554 /* LoginView.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LoginView.sks; sourceTree = "<group>"; };
+		7583A5D62A6B36C5009E6554 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -34,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7583A5C22A6B2CBC009E6554 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,16 +73,30 @@
 		7583A5A02A6721C8009E6554 /* AvocadoRun */ = {
 			isa = PBXGroup;
 			children = (
+				7583A5C32A6B2FC9009E6554 /* Extensions */,
 				7583A5A12A6721C8009E6554 /* AppDelegate.swift */,
 				7583A5B82A672287009E6554 /* GameScene.sks */,
 				7583A5A52A6721C8009E6554 /* Actions.sks */,
 				7583A5A72A6721C8009E6554 /* GameScene.swift */,
+				7583A5D22A6B3603009E6554 /* LoginView.sks */,
+				7583A5CA2A6B33AF009E6554 /* NewAccountView.swift */,
+				7583A5D62A6B36C5009E6554 /* LoginView.swift */,
 				7583A5A92A6721C8009E6554 /* GameViewController.swift */,
+				7583A5CC2A6B33F4009E6554 /* InsideAppView.swift */,
 				7583A5AB2A6721C8009E6554 /* Main.storyboard */,
+				7583A5C62A6B31CA009E6554 /* GoogleService-Info.plist */,
 				7583A5AE2A6721C9009E6554 /* Assets.xcassets */,
 				7583A5B02A6721C9009E6554 /* LaunchScreen.storyboard */,
 			);
 			path = AvocadoRun;
+			sourceTree = "<group>";
+		};
+		7583A5C32A6B2FC9009E6554 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				7583A5C42A6B2FE9009E6554 /* String.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -87,6 +115,9 @@
 			dependencies = (
 			);
 			name = AvocadoRun;
+			packageProductDependencies = (
+				7583A5C12A6B2CBC009E6554 /* FirebaseAuth */,
+			);
 			productName = AvocadoRun;
 			productReference = 7583A59E2A6721C8009E6554 /* AvocadoRun.app */;
 			productType = "com.apple.product-type.application";
@@ -115,6 +146,9 @@
 				Base,
 			);
 			mainGroup = 7583A5952A6721C8009E6554;
+			packageReferences = (
+				7583A5C02A6B2CBC009E6554 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = 7583A59F2A6721C8009E6554 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -132,8 +166,10 @@
 				7583A5AD2A6721C8009E6554 /* Main.storyboard in Resources */,
 				7583A5B92A672287009E6554 /* GameScene.sks in Resources */,
 				7583A5AF2A6721C9009E6554 /* Assets.xcassets in Resources */,
+				7583A5D32A6B3603009E6554 /* LoginView.sks in Resources */,
 				7583A5B22A6721C9009E6554 /* LaunchScreen.storyboard in Resources */,
 				7583A5A62A6721C8009E6554 /* Actions.sks in Resources */,
+				7583A5C72A6B31CA009E6554 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -144,8 +180,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7583A5CD2A6B33F4009E6554 /* InsideAppView.swift in Sources */,
+				7583A5D72A6B36C5009E6554 /* LoginView.swift in Sources */,
 				7583A5A82A6721C8009E6554 /* GameScene.swift in Sources */,
+				7583A5CB2A6B33AF009E6554 /* NewAccountView.swift in Sources */,
 				7583A5AA2A6721C8009E6554 /* GameViewController.swift in Sources */,
+				7583A5C52A6B2FE9009E6554 /* String.swift in Sources */,
 				7583A5A22A6721C8009E6554 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -362,6 +402,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		7583A5C02A6B2CBC009E6554 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7583A5C12A6B2CBC009E6554 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7583A5C02A6B2CBC009E6554 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 7583A5962A6721C8009E6554 /* Project object */;
 }

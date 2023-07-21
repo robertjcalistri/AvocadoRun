@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>88872054192-7cq6fb71a9fd90318cmhs6jkclv66c5i.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.88872054192-7cq6fb71a9fd90318cmhs6jkclv66c5i</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDrsg0Dtc_1mTTJWrMoZJY66M7mEHJ0nOM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>88872054192</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>ios.rw.fiu.edu.AvocadoRun</string>
+	<key>PROJECT_ID</key>
+	<string>avocadolb-924c5</string>
+	<key>STORAGE_BUCKET</key>
+	<string>avocadolb-924c5.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:88872054192:ios:6d2d42260725e601ff3a75</string>
+</dict>
+</plist>

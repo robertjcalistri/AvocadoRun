@@ -20,7 +20,12 @@ class GameScene: SKScene {
     var score: Int = 0
     
     override func didMove(to view: SKView) {
-        backgroundColor = SKColor.white
+        
+        let backgroundImg = SKSpriteNode(imageNamed: "background")
+        backgroundImg.position = CGPointZero
+        backgroundImg.zPosition = -1
+        addChild(backgroundImg)
+        
         player.physicsBody = SKPhysicsBody(rectangleOf: player.size)
         player.zPosition = 1
         
@@ -131,7 +136,7 @@ class GameScene: SKScene {
     func generateGround() {
         // Generate ground tiles and add them
         while lastGroundTileX < size.width {
-            let groundTile = SKSpriteNode(color: SKColor.black, size: CGSize(width: groundTileWidth, height: 20))
+            let groundTile = SKSpriteNode(color: SKColor.brown, size: CGSize(width: groundTileWidth, height: 20))
             let randomHeight = CGFloat.random(in: -maxPlatformHeight...maxPlatformHeight)
             groundTile.position = CGPoint(x: lastGroundTileX, y: lastGroundTileY + randomHeight)
             groundTile.physicsBody = SKPhysicsBody(rectangleOf: groundTile.size)
@@ -155,7 +160,7 @@ class GameScene: SKScene {
                 groundTiles.remove(at: index)
 
                 // Add a new ground tile to the right
-                let newGroundTile = SKSpriteNode(color: SKColor.black, size: CGSize(width: groundTileWidth, height: 20))
+                let newGroundTile = SKSpriteNode(color: SKColor.brown, size: CGSize(width: groundTileWidth, height: 20))
                 let randomHeight = CGFloat.random(in: -maxPlatformHeight...maxPlatformHeight)
                 newGroundTile.position = CGPoint(x: lastGroundTileX, y: lastGroundTileY + randomHeight)
                 newGroundTile.physicsBody = SKPhysicsBody(rectangleOf: newGroundTile.size)

@@ -18,10 +18,7 @@
 		7583A5C22A6B2CBC009E6554 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 7583A5C12A6B2CBC009E6554 /* FirebaseAuth */; };
 		7583A5C52A6B2FE9009E6554 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7583A5C42A6B2FE9009E6554 /* String.swift */; };
 		7583A5C72A6B31CA009E6554 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7583A5C62A6B31CA009E6554 /* GoogleService-Info.plist */; };
-		7583A5CB2A6B33AF009E6554 /* NewAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7583A5CA2A6B33AF009E6554 /* NewAccountView.swift */; };
-		7583A5CD2A6B33F4009E6554 /* InsideAppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7583A5CC2A6B33F4009E6554 /* InsideAppView.swift */; };
-		7583A5D32A6B3603009E6554 /* LoginView.sks in Resources */ = {isa = PBXBuildFile; fileRef = 7583A5D22A6B3603009E6554 /* LoginView.sks */; };
-		7583A5D72A6B36C5009E6554 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7583A5D62A6B36C5009E6554 /* LoginView.swift */; };
+		75CFCE862A6B3CD8000C087A /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CFCE852A6B3CD8000C087A /* MainMenuViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,10 +33,7 @@
 		7583A5B82A672287009E6554 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		7583A5C42A6B2FE9009E6554 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = String.swift; path = "../../../../../../.Trash/AvocadoRun 4.57.01 PM/AvocadoRun/String.swift"; sourceTree = "<group>"; };
 		7583A5C62A6B31CA009E6554 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
-		7583A5CA2A6B33AF009E6554 /* NewAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAccountView.swift; sourceTree = "<group>"; };
-		7583A5CC2A6B33F4009E6554 /* InsideAppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsideAppView.swift; sourceTree = "<group>"; };
-		7583A5D22A6B3603009E6554 /* LoginView.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LoginView.sks; sourceTree = "<group>"; };
-		7583A5D62A6B36C5009E6554 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		75CFCE852A6B3CD8000C087A /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,11 +72,8 @@
 				7583A5B82A672287009E6554 /* GameScene.sks */,
 				7583A5A52A6721C8009E6554 /* Actions.sks */,
 				7583A5A72A6721C8009E6554 /* GameScene.swift */,
-				7583A5D22A6B3603009E6554 /* LoginView.sks */,
-				7583A5CA2A6B33AF009E6554 /* NewAccountView.swift */,
-				7583A5D62A6B36C5009E6554 /* LoginView.swift */,
+				75CFCE852A6B3CD8000C087A /* MainMenuViewController.swift */,
 				7583A5A92A6721C8009E6554 /* GameViewController.swift */,
-				7583A5CC2A6B33F4009E6554 /* InsideAppView.swift */,
 				7583A5AB2A6721C8009E6554 /* Main.storyboard */,
 				7583A5C62A6B31CA009E6554 /* GoogleService-Info.plist */,
 				7583A5AE2A6721C9009E6554 /* Assets.xcassets */,
@@ -166,7 +157,6 @@
 				7583A5AD2A6721C8009E6554 /* Main.storyboard in Resources */,
 				7583A5B92A672287009E6554 /* GameScene.sks in Resources */,
 				7583A5AF2A6721C9009E6554 /* Assets.xcassets in Resources */,
-				7583A5D32A6B3603009E6554 /* LoginView.sks in Resources */,
 				7583A5B22A6721C9009E6554 /* LaunchScreen.storyboard in Resources */,
 				7583A5A62A6721C8009E6554 /* Actions.sks in Resources */,
 				7583A5C72A6B31CA009E6554 /* GoogleService-Info.plist in Resources */,
@@ -180,10 +170,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7583A5CD2A6B33F4009E6554 /* InsideAppView.swift in Sources */,
-				7583A5D72A6B36C5009E6554 /* LoginView.swift in Sources */,
+				75CFCE862A6B3CD8000C087A /* MainMenuViewController.swift in Sources */,
 				7583A5A82A6721C8009E6554 /* GameScene.swift in Sources */,
-				7583A5CB2A6B33AF009E6554 /* NewAccountView.swift in Sources */,
 				7583A5AA2A6721C8009E6554 /* GameViewController.swift in Sources */,
 				7583A5C52A6B2FE9009E6554 /* String.swift in Sources */,
 				7583A5A22A6721C8009E6554 /* AppDelegate.swift in Sources */,

@@ -12,9 +12,13 @@ import FirebaseCore
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        window = UIWindow(frame: UIScreen.main.bounds)
+        let mainMenuViewController = MainMenuViewController() // Replace "MainMenuViewController" with the actual name of your main menu view controller
+        let navigationController = UINavigationController(rootViewController: mainMenuViewController)
+        window?.rootViewController = navigationController
+        window?.makeKeyAndVisible()
         FirebaseApp.configure()
         return true
     }

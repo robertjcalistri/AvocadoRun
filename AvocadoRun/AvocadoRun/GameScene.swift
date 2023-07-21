@@ -3,7 +3,10 @@ import GameplayKit
 
 class GameScene: SKScene {
     let player = SKSpriteNode(color: .red, size: CGSize(width: 50, height: 50))
-
+    
+    var lastJumpTime: TimeInterval = 0
+    let jumpCooldown: TimeInterval = 0.6
+    
     // Set up the ground variables
     var groundTiles = [SKSpriteNode]()
     var lastGroundTileX: CGFloat = 0.0
@@ -37,16 +40,16 @@ class GameScene: SKScene {
         gameOverLabel = SKLabelNode(fontNamed: "Arial")
         gameOverLabel.text = "Game Over! Tap to restart"
         gameOverLabel.fontSize = 50
-        gameOverLabel.fontColor = .red
-        gameOverLabel.position = CGPointZero
+        gameOverLabel.fontColor = SKColor.red
+        gameOverLabel.position = CGPoint(x: 0, y:0)
         gameOverLabel.zPosition = 2
         
         // Score label
         scoreLabel = SKLabelNode(fontNamed: "Arial")
         scoreLabel.text = "Score: 0"
         scoreLabel.fontSize = 24
-        scoreLabel.fontColor = .black
-        scoreLabel.position = CGPoint(x:0, y:400)
+        scoreLabel.fontColor = SKColor.black
+        scoreLabel.position = CGPoint(x: 0, y:400)
         scoreLabel.zPosition = 2
         addChild(scoreLabel)
         
@@ -67,10 +70,12 @@ class GameScene: SKScene {
         run(repeatForever)
     }
     override func update(_ currentTime: TimeInterval) {
-        if player.position.y < -size.height / 2 || player.position.y > size.height / 2{
+        if player.position.y < -size.height / 2 {
             if !isGameOver {
                 gameOver()
             }
+        } else if player.position.y > size.height / 2 {
+            player.physicsBody?.velocity.dy = min(0, player.physicsBody?.velocity.dy ?? 0)
         } else {
             moveGround()
         }
@@ -87,13 +92,17 @@ class GameScene: SKScene {
 
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if isGameOver {
-            restartGame()
-        } else {
-            player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 100))
+            if isGameOver {
+                restartGame()
+            } else {
+                let currentTime = touches.first?.timestamp ?? 0
+                if currentTime - lastJumpTime >= jumpCooldown {
+                    player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 100))
+                    lastJumpTime = currentTime
+                }
+            }
         }
-    }
-
+    
     func restartGame() {
         gameOverLabel.removeFromParent()
         isGameOver = false

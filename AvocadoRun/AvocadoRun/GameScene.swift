@@ -70,7 +70,7 @@ class GameScene: SKScene {
         run(repeatForever)
     }
     override func update(_ currentTime: TimeInterval) {
-        if player.position.y < -size.height / 2 {
+        if player.position.y < -size.height / 2 || player.position.y > size.height / 2 {
             if !isGameOver {
                 gameOver()
             }
@@ -97,9 +97,17 @@ class GameScene: SKScene {
             } else {
                 let currentTime = touches.first?.timestamp ?? 0
                 if currentTime - lastJumpTime >= jumpCooldown {
-                    player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 100))
-                    lastJumpTime = currentTime
+                    if let dy = player.physicsBody?.velocity.dy {
+                        if dy < 0 {
+                            player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 130))
+                        }
+                        else{
+                            player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 100))
+                        }
+                        lastJumpTime = currentTime
+                    }
                 }
+                
             }
         }
     

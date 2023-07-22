@@ -23,6 +23,26 @@ class GameScene: SKScene {
     
     var highScoreLabel: SKLabelNode!
     
+    class LeaderboardEntry {
+        var email: String
+        var highScore: Int
+
+        init(email: String, highScore: Int) {
+            self.email = email
+            self.highScore = highScore
+        }
+
+        func toDictionary() -> [String: Any] {
+            return [
+                "email": email,
+                "highScore": highScore
+            ]
+        }
+    }
+
+
+    
+    
     override func didMove(to view: SKView) {
         
         let backgroundImg = SKSpriteNode(imageNamed: "Menubackground")
@@ -76,6 +96,8 @@ class GameScene: SKScene {
         addChild(highScoreLabel)
         
         loadHighScore()
+        loadLeaderboard()
+
     }
     
     func startScoring() {
@@ -136,8 +158,48 @@ class GameScene: SKScene {
 
             // Save the high score to Firebase
             highScoreRef.setValue(score)
+
+            // Also save the player's email along with the high score
+            if let email = currentUser.email {
+                let leaderboardEntry = LeaderboardEntry(email: email, highScore: score)
+                let leaderboardRef = Database.database().reference().child("leaderboard").child(currentUser.uid)
+                leaderboardRef.setValue(leaderboardEntry.toDictionary())
+            }
         }
     }
+    
+    func loadLeaderboard() {
+        let leaderboardRef = Database.database().reference().child("leaderboard")
+
+        // Observe the leaderboard data and update the highScoreLabel accordingly
+        leaderboardRef.observeSingleEvent(of: .value) { snapshot in
+            var leaderboardData = [LeaderboardEntry]()
+
+            // Loop through the snapshot to retrieve the leaderboard entries
+            for childSnapshot in snapshot.children {
+                if let childDataSnapshot = childSnapshot as? DataSnapshot,
+                   let data = childDataSnapshot.value as? [String: Any],
+                   let email = data["email"] as? String,
+                   let highScore = data["highScore"] as? Int {
+                    let leaderboardEntry = LeaderboardEntry(email: email, highScore: highScore)
+                    leaderboardData.append(leaderboardEntry)
+                }
+            }
+
+            // Sort the leaderboardData by high score (highest to lowest)
+            leaderboardData.sort(by: { $0.highScore > $1.highScore })
+
+            // Update the highScoreLabel to show the leaderboard
+            var leaderboardText = "Leaderboard:\n"
+            for (index, entry) in leaderboardData.prefix(10).enumerated() {
+                let playerName = entry.email.components(separatedBy: "@").first ?? "Unknown"
+                leaderboardText += "\(index + 1). \(playerName): \(entry.highScore)\n"
+            }
+            self.highScoreLabel.text = leaderboardText
+        }
+    }
+
+
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
             if isGameOver {

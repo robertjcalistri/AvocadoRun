@@ -1,5 +1,7 @@
 import SpriteKit
 import GameplayKit
+import Firebase
+import FirebaseDatabase
 
 class GameScene: SKScene {
     let player = SKSpriteNode(color: .red, size: CGSize(width: 50, height: 50))
@@ -18,6 +20,8 @@ class GameScene: SKScene {
     var isGameOver = false
     var scoreLabel: SKLabelNode!
     var score: Int = 0
+    
+    var highScoreLabel: SKLabelNode!
     
     override func didMove(to view: SKView) {
         
@@ -61,6 +65,15 @@ class GameScene: SKScene {
         startScoring()
         print("Score Label: \(scoreLabel)")
         print("Game Over Label: \(gameOverLabel)")
+        
+        highScoreLabel = SKLabelNode(fontNamed: "Arial")
+        highScoreLabel.fontSize = 24
+        highScoreLabel.fontColor = SKColor.black
+        highScoreLabel.position = CGPoint(x: size.width / 2, y: size.height - highScoreLabel.frame.size.height - 10)
+        highScoreLabel.zPosition = 2
+        addChild(highScoreLabel)
+        
+        loadHighScore()
     }
     
     func startScoring() {
@@ -91,8 +104,38 @@ class GameScene: SKScene {
         player.physicsBody?.isDynamic = false
         addChild(gameOverLabel)
         removeAllActions()
+        saveHighScore()
     }
+    
+    func loadHighScore() {
+          if let currentUser = Auth.auth().currentUser {
+              // Use the user's UID as the key for the high score in Firebase
+              let highScoreRef = Database.database().reference().child("highScores").child(currentUser.uid)
 
+              highScoreRef.observeSingleEvent(of: .value) { snapshot in
+                  if let highScore = snapshot.value as? Int {
+                      // Display the high score
+                      self.highScoreLabel.text = "High Score: \(highScore)"
+                  } else {
+                      // User has no high score yet
+                      self.highScoreLabel.text = "High Score: 0"
+                  }
+              }
+          } else {
+              // User is not logged in, so there's no high score to load
+              self.highScoreLabel.text = "High Score: 0"
+          }
+      }
+    
+    func saveHighScore() {
+        if let currentUser = Auth.auth().currentUser {
+            // Use the user's UID as the key for the high score in Firebase
+            let highScoreRef = Database.database().reference().child("highScores").child(currentUser.uid)
+
+            // Save the high score to Firebase
+            highScoreRef.setValue(score)
+        }
+    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
             if isGameOver {

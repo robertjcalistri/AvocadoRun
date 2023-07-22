@@ -128,8 +128,7 @@ class MainMenuScene: SKScene {
 
             if playButton.contains(location) {
                 if let view = self.view {
-                    let gameScene = GameScene(size: view.bounds.size)
-                    gameScene.scaleMode = .resizeFill
+                    let gameScene = GameScene(size: CGSize(width: 500, height: 1080))
                     let transition = SKTransition.flipHorizontal(withDuration: 0.5)
                     view.presentScene(gameScene, transition: transition)
                 }

@@ -62,6 +62,8 @@ class GameScene: SKScene {
         scoreLabel.zPosition = 2
         addChild(scoreLabel)
         
+        self.scaleMode = .aspectFill
+        
         startScoring()
         print("Score Label: \(scoreLabel)")
         print("Game Over Label: \(gameOverLabel)")

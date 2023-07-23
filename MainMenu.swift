@@ -138,10 +138,10 @@ class MainMenu: SKScene {
             addChild(gameTitle)
             
             //Format and display loginButton
-            loginButton.text = "Login"
+            loginButton.text = "Login to Play"
             loginButton.fontColor = SKColor.magenta
             loginButton.position = CGPoint(x: size.width * 0.5, y: self.size.height * 0.62)
-            addChild(loginButton)
+            //addChild(loginButton)
             
             //Format and display createAccountButton
             createAccountButton.text = "Create Account"
@@ -176,16 +176,25 @@ class MainMenu: SKScene {
             playerImg.zPosition = 1
             addChild(playerImg)
             
-            //Determins if player is logged in it will display start button, otherwise they will get a loginError
-            if isLoggedIn {
-                addChild(startButton)
-            } else
-            {
-                loginError.text = " Must Log in to play"
-                loginError.fontColor = SKColor.red
-                loginError.position = CGPoint(x: size.width * 0.5, y: self.size.height * 0.42)
-                loginError.zPosition = 1
-            }    
+         //Determins if player is logged in it will display startbutton createaccountbutton will dissapear and
+         //lets play will appear.
+        if isLoggedIn {
+            
+            loginButton.text = "Lets Play! Press Start"
+            loginButton.fontSize = 40
+            loginButton.position = CGPoint(x: size.width * 0.5, y: self.size.height * 0.60)
+            addChild(loginButton)
+            addChild(startButton)
+            
+            createAccountButton.isHidden = true
+            
+        } else {
+           
+            loginButton.text = "Login to Play"
+            addChild(loginButton)
+            addChild(createAccountButton)
+        }
+        
             
         }//End of didMove
             

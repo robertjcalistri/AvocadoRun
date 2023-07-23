@@ -9,6 +9,8 @@ class GameScene: SKScene {
     var lastJumpTime: TimeInterval = 0
     let jumpCooldown: TimeInterval = 0.6
     
+    var leaderboardLabel: SKLabelNode!
+    
     // Set up the ground variables
     var groundTiles = [SKSpriteNode]()
     var lastGroundTileX: CGFloat = 0.0
@@ -22,26 +24,9 @@ class GameScene: SKScene {
     var score: Int = 0
     
     var highScoreLabel: SKLabelNode!
+    var highestScore: Int = 0
     
-    class LeaderboardEntry {
-        var email: String
-        var highScore: Int
-
-        init(email: String, highScore: Int) {
-            self.email = email
-            self.highScore = highScore
-        }
-
-        func toDictionary() -> [String: Any] {
-            return [
-                "email": email,
-                "highScore": highScore
-            ]
-        }
-    }
-
-
-    
+    var currentUser: User?
     
     override func didMove(to view: SKView) {
         
@@ -82,11 +67,17 @@ class GameScene: SKScene {
         scoreLabel.zPosition = 2
         addChild(scoreLabel)
         
-        self.scaleMode = .aspectFill
-        
         startScoring()
         print("Score Label: \(scoreLabel)")
         print("Game Over Label: \(gameOverLabel)")
+        
+        leaderboardLabel = SKLabelNode(fontNamed: "Arial")
+        leaderboardLabel.fontSize = 20
+        leaderboardLabel.fontColor = SKColor.black
+        leaderboardLabel.position = CGPoint(x: size.width / 2, y: size.height / 2 - 100)
+        leaderboardLabel.zPosition = 2
+        addChild(leaderboardLabel)
+        
         
         highScoreLabel = SKLabelNode(fontNamed: "Arial")
         highScoreLabel.fontSize = 24
@@ -96,7 +87,13 @@ class GameScene: SKScene {
         addChild(highScoreLabel)
         
         loadHighScore()
-        loadLeaderboard()
+        
+        Auth.auth().addStateDidChangeListener { auth, user in
+            self.currentUser = user
+        }
+        
+        observeLeaderboard()
+        leaderboardLabel.isHidden = true
 
     }
     
@@ -129,39 +126,39 @@ class GameScene: SKScene {
         addChild(gameOverLabel)
         removeAllActions()
         saveHighScore()
+        leaderboardLabel.isHidden = false
+        loadLeaderboard()
     }
     
     func loadHighScore() {
-          if let currentUser = Auth.auth().currentUser {
-              // Use the user's UID as the key for the high score in Firebase
-              let highScoreRef = Database.database().reference().child("highScores").child(currentUser.uid)
-
-              highScoreRef.observeSingleEvent(of: .value) { snapshot in
-                  if let highScore = snapshot.value as? Int {
-                      // Display the high score
-                      self.highScoreLabel.text = "High Score: \(highScore)"
-                  } else {
-                      // User has no high score yet
-                      self.highScoreLabel.text = "High Score: 0"
-                  }
-              }
-          } else {
-              // User is not logged in, so there's no high score to load
-              self.highScoreLabel.text = "High Score: 0"
-          }
-      }
-    
-    func saveHighScore() {
         if let currentUser = Auth.auth().currentUser {
             // Use the user's UID as the key for the high score in Firebase
             let highScoreRef = Database.database().reference().child("highScores").child(currentUser.uid)
 
-            // Save the high score to Firebase
-            highScoreRef.setValue(score)
+            highScoreRef.observe(.value) { snapshot in
+                if let highScore = snapshot.value as? Int {
+                    // Update the highest score if the retrieved high score is greater
+                    self.highestScore = max(highScore, self.highestScore)
+                }
+                self.highScoreLabel.text = "High Score: \(self.highestScore)"
+            }
+        } else {
+            // User is not logged in, so there's no high score to load
+            self.highScoreLabel.text = "High Score: 0"
+        }
+    }
+    
+    func saveHighScore() {
+        if let currentUser = self.currentUser {
+            // Use the user's UID as the key for the high score in Firebase
+            let highScoreRef = Database.database().reference().child("highScores").child(currentUser.uid)
+
+            // Update the high score in Firebase if the current score is greater
+            highScoreRef.setValue(max(score, highestScore))
 
             // Also save the player's email along with the high score
             if let email = currentUser.email {
-                let leaderboardEntry = LeaderboardEntry(email: email, highScore: score)
+                let leaderboardEntry = LeaderboardEntry(email: email, highScore: max(score, highestScore))
                 let leaderboardRef = Database.database().reference().child("leaderboard").child(currentUser.uid)
                 leaderboardRef.setValue(leaderboardEntry.toDictionary())
             }
@@ -171,8 +168,8 @@ class GameScene: SKScene {
     func loadLeaderboard() {
         let leaderboardRef = Database.database().reference().child("leaderboard")
 
-        // Observe the leaderboard data and update the highScoreLabel accordingly
-        leaderboardRef.observeSingleEvent(of: .value) { snapshot in
+        // Observe the leaderboard data and update the leaderboardLabel accordingly
+        leaderboardRef.observe(.value) { snapshot in
             var leaderboardData = [LeaderboardEntry]()
 
             // Loop through the snapshot to retrieve the leaderboard entries
@@ -189,17 +186,50 @@ class GameScene: SKScene {
             // Sort the leaderboardData by high score (highest to lowest)
             leaderboardData.sort(by: { $0.highScore > $1.highScore })
 
-            // Update the highScoreLabel to show the leaderboard
+            // Update the leaderboardLabel to show the leaderboard
             var leaderboardText = "Leaderboard:\n"
             for (index, entry) in leaderboardData.prefix(10).enumerated() {
                 let playerName = entry.email.components(separatedBy: "@").first ?? "Unknown"
                 leaderboardText += "\(index + 1). \(playerName): \(entry.highScore)\n"
             }
-            self.highScoreLabel.text = leaderboardText
+            
+            // Set the leaderboardLabel's text and numberOfLines property
+            self.leaderboardLabel.text = leaderboardText
+            self.leaderboardLabel.numberOfLines = 0
         }
     }
 
+    
+    func observeLeaderboard() {
+        let leaderboardRef = Database.database().reference().child("leaderboard")
 
+        // Observe the leaderboard data and update the highScoreLabel accordingly
+        leaderboardRef.observe(.value) { snapshot in
+            var leaderboardData = [LeaderboardEntry]()
+
+            // Loop through the snapshot to retrieve the leaderboard entries
+            for childSnapshot in snapshot.children {
+                if let childDataSnapshot = childSnapshot as? DataSnapshot,
+                   let data = childDataSnapshot.value as? [String: Any],
+                   let email = data["email"] as? String,
+                   let highScore = data["highScore"] as? Int {
+                    let leaderboardEntry = LeaderboardEntry(email: email, highScore: highScore)
+                    leaderboardData.append(leaderboardEntry)
+                }
+            }
+
+            // Sort the leaderboardData by high score (highest to lowest)
+            leaderboardData.sort(by: { $0.highScore > $1.highScore })
+
+            // Update the leaderboardLabel to show the leaderboard
+            var leaderboardText = "Leaderboard:\n"
+            for (index, entry) in leaderboardData.prefix(10).enumerated() {
+                let playerName = entry.email.components(separatedBy: "@").first ?? "Unknown"
+                leaderboardText += "\(index + 1). \(playerName): \(entry.highScore)\n"
+            }
+            self.leaderboardLabel.text = leaderboardText
+        }
+    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
             if isGameOver {
@@ -222,6 +252,7 @@ class GameScene: SKScene {
         }
     
     func restartGame() {
+        leaderboardLabel.isHidden = true
         gameOverLabel.removeFromParent()
         isGameOver = false
         player.physicsBody?.isDynamic = true
@@ -232,6 +263,9 @@ class GameScene: SKScene {
         groundTiles.removeAll()
         generateGround()
         startScoring()
+        
+        currentUser = Auth.auth().currentUser
+        observeLeaderboard()
         
         // Reset score
         score = 0
@@ -277,5 +311,21 @@ class GameScene: SKScene {
                 lastGroundTileY = newGroundTile.position.y
             }
         }
+    }
+}
+class LeaderboardEntry {
+    var email: String
+    var highScore: Int
+    
+    init(email: String, highScore: Int) {
+        self.email = email
+        self.highScore = highScore
+    }
+
+    func toDictionary() -> [String: Any] {
+        return [
+            "email": email,
+            "highScore": highScore
+        ]
     }
 }
